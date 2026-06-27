@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/budget-personale/',
+  base: '/buget-personale/',
   plugins: [
     react(),
     VitePWA({
@@ -16,8 +16,8 @@ export default defineConfig({
         theme_color: '#16a34a',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/budget-personale/',
-        scope: '/budget-personale/',
+        start_url: '/buget-personale/',
+        scope: '/buget-personale/',
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icon-512.png', sizes: '512x512', type: 'image/png' }
