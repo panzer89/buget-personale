@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useCategorie } from './useCategorie'
 import { useMovimenti } from './useMovimenti'
 import { useImpostazioni } from './useImpostazioni'
+import { useSpeseProgrammate } from './useSpeseProgrammate'
 
 function meseCorrente() {
   return new Date().toISOString().slice(0, 7)
@@ -11,6 +12,7 @@ function Dashboard() {
   const { categorie } = useCategorie()
   const { movimenti, loading } = useMovimenti()
   const { margine, setMargine } = useImpostazioni()
+  const { speseProgrammate } = useSpeseProgrammate()
   const [mese, setMese] = useState(meseCorrente())
 
   function nomeCategoria(id) {
@@ -74,8 +76,18 @@ function Dashboard() {
       }
     })
 
+    // Le spese/entrate programmate in attesa sono già occorrenze singole
+    // (la ricorrenza mensile è già espansa in più voci), quindi si somma il valore puro.
+    const programmateAnno = speseProgrammate.filter(
+      (s) => s.stato === 'in attesa' && s.data.startsWith(annoCorrente)
+    )
+    programmateAnno.forEach((s) => {
+      if (s.tipo === 'entrata') entrateAnno += s.importo
+      else speseAnno += s.importo
+    })
+
     return { entrateAnno, speseAnno, saldoAnno: entrateAnno - speseAnno }
-  }, [movimenti, annoCorrente])
+  }, [movimenti, speseProgrammate, annoCorrente])
 
   if (loading) return <p>Caricamento dashboard...</p>
 
@@ -172,7 +184,8 @@ function Dashboard() {
       </div>
       <p className="hint">
         La proiezione moltiplica per 12 i movimenti con ricorrenza mensile registrati
-        nell'anno e somma quelli annuali/una tantum già inseriti.
+        nell'anno, somma quelli annuali/una tantum già inseriti, e include anche le
+        spese/entrate programmate ancora in attesa di conferma.
       </p>
     </section>
   )
