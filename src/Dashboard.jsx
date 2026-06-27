@@ -32,6 +32,13 @@ function Dashboard() {
 
   const saldo = totaleEntrate - totaleSpese
 
+  const saldoTotale = useMemo(() => {
+    return movimenti.reduce(
+      (sum, m) => sum + (m.tipo === 'entrata' ? m.importo : -m.importo),
+      0
+    )
+  }, [movimenti])
+
   const budgetDisponibile = totaleEntrate * (1 - margine / 100)
   const puoiSpendere = budgetDisponibile - totaleSpese
 
@@ -92,9 +99,14 @@ function Dashboard() {
           <span className="valore">€{totaleSpese.toFixed(2)}</span>
         </div>
         <div className={`card saldo ${saldo >= 0 ? 'positivo' : 'negativo'}`}>
-          <span className="label">Saldo</span>
+          <span className="label">Saldo mensile</span>
           <span className="valore">€{saldo.toFixed(2)}</span>
         </div>
+      </div>
+
+      <div className={`card saldo-totale ${saldoTotale >= 0 ? 'positivo' : 'negativo'}`}>
+        <span className="label">Saldo totale (tutti i movimenti)</span>
+        <span className="valore">€{saldoTotale.toFixed(2)}</span>
       </div>
 
       <div className="analisi-box">

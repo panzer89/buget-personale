@@ -508,6 +508,19 @@ main {
   margin-top: 0.5rem;
 }
 
+.saldo-totale {
+  margin-top: 0.6rem;
+  padding: 0.9rem 1rem;
+}
+
+.saldo-totale .label {
+  font-size: 0.8rem;
+}
+
+.saldo-totale .valore {
+  font-size: 1.5rem;
+}
+
 .analisi-box {
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
