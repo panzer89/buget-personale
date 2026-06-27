@@ -23,13 +23,14 @@ function SpeseProgrammate() {
   const [data, setData] = useState(oggiISO())
   const [tipo, setTipo] = useState('spesa')
   const [categoriaId, setCategoriaId] = useState('')
+  const [ricorrenza, setRicorrenza] = useState('nessuna')
 
   const categorieFiltrate = categorie.filter((c) => c.tipo === tipo)
 
   async function handleSubmit(e) {
     e.preventDefault()
     if (!nome.trim() || !importo) return
-    await aggiungiSpesaProgrammata({ nome: nome.trim(), importo, data, tipo, categoriaId })
+    await aggiungiSpesaProgrammata({ nome: nome.trim(), importo, data, tipo, categoriaId, ricorrenza })
     setNome('')
     setImporto('')
   }
@@ -94,6 +95,13 @@ function SpeseProgrammate() {
             ))}
           </select>
         </div>
+        <div className="row">
+          <select value={ricorrenza} onChange={(e) => setRicorrenza(e.target.value)}>
+            <option value="nessuna">Nessuna ricorrenza</option>
+            <option value="mensile">Mensile (fino a fine anno)</option>
+            <option value="annuale">Annuale</option>
+          </select>
+        </div>
         <button type="submit">Programma</button>
       </form>
 
@@ -108,6 +116,9 @@ function SpeseProgrammate() {
                 <div>
                   <strong>{s.nome}</strong>
                   <span className="data">{s.data} {s.categoriaId && `· ${nomeCategoria(s.categoriaId)}`}</span>
+                  {s.ricorrenza && s.ricorrenza !== 'nessuna' && (
+                    <span className="badge">{s.ricorrenza}</span>
+                  )}
                 </div>
                 <div className="importo-azioni">
                   <span className="importo">
