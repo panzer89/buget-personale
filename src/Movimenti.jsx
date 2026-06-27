@@ -19,7 +19,7 @@ function Movimenti() {
   const [categoriaId, setCategoriaId] = useState('')
   const [data, setData] = useState(oggiISO())
   const [ricorrenza, setRicorrenza] = useState('nessuna')
-  const [note, setNote] = useState('')
+  const [descrizione, setDescrizione] = useState('')
 
   const [filtroMese, setFiltroMese] = useState('')
   const [filtroCategoria, setFiltroCategoria] = useState('')
@@ -30,9 +30,9 @@ function Movimenti() {
   async function handleSubmit(e) {
     e.preventDefault()
     if (!importo || !categoriaId) return
-    await aggiungiMovimento({ data, importo, tipo, categoriaId, ricorrenza, note })
+    await aggiungiMovimento({ data, importo, tipo, categoriaId, ricorrenza, note: descrizione })
     setImporto('')
-    setNote('')
+    setDescrizione('')
   }
 
   const movimentiFiltrati = useMemo(() => {
@@ -53,6 +53,28 @@ function Movimenti() {
       <h2>Nuovo movimento</h2>
       <form onSubmit={handleSubmit} className="movimento-form">
         <div className="row">
+          <input
+            type="text"
+            placeholder="Descrizione (es. Spesa supermercato)"
+            value={descrizione}
+            onChange={(e) => setDescrizione(e.target.value)}
+          />
+          <input
+            type="number"
+            step="0.01"
+            placeholder="Importo €"
+            value={importo}
+            onChange={(e) => setImporto(e.target.value)}
+            required
+          />
+        </div>
+        <div className="row">
+          <input
+            type="date"
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            required
+          />
           <select value={tipo} onChange={(e) => { setTipo(e.target.value); setCategoriaId('') }}>
             <option value="spesa">Spesa</option>
             <option value="entrata">Entrata</option>
@@ -69,34 +91,12 @@ function Movimenti() {
           </select>
         </div>
         <div className="row">
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Importo €"
-            value={importo}
-            onChange={(e) => setImporto(e.target.value)}
-            required
-          />
-          <input
-            type="date"
-            value={data}
-            onChange={(e) => setData(e.target.value)}
-            required
-          />
-        </div>
-        <div className="row">
           <select value={ricorrenza} onChange={(e) => setRicorrenza(e.target.value)}>
             <option value="nessuna">Una tantum</option>
             <option value="mensile">Ricorrenza mensile</option>
             <option value="annuale">Ricorrenza annuale</option>
           </select>
         </div>
-        <input
-          type="text"
-          placeholder="Note (opzionale)"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-        />
         <button type="submit">Aggiungi movimento</button>
       </form>
 
@@ -127,12 +127,13 @@ function Movimenti() {
           {movimentiFiltrati.map((m) => (
             <li key={m.id} className={m.tipo}>
               <div>
-                <strong>{nomeCategoria(m.categoriaId)}</strong>
-                <span className="data">{m.data}</span>
+                <strong>{m.note || nomeCategoria(m.categoriaId)}</strong>
+                <span className="data">
+                  {m.data} · {nomeCategoria(m.categoriaId)}
+                </span>
                 {m.ricorrenza !== 'nessuna' && (
                   <span className="badge">{m.ricorrenza}</span>
                 )}
-                {m.note && <p className="note">{m.note}</p>}
               </div>
               <div className="importo-azioni">
                 <span className="importo">
