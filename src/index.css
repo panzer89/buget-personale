@@ -16,6 +16,93 @@ body {
   background: #fff;
 }
 
+@media (min-width: 860px) {
+  body {
+    background: #eef1f0;
+    padding: 2.5rem 1rem;
+  }
+
+  .app {
+    max-width: 880px;
+    min-height: auto;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .app-header {
+    padding: 1.5rem 2rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .tabs {
+    padding: 0 1rem;
+  }
+
+  .tabs button {
+    flex: none;
+    padding: 0.9rem 1.6rem;
+    font-size: 1rem;
+  }
+
+  main {
+    padding: 2rem;
+  }
+
+  .riepilogo-cards {
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.2rem;
+  }
+
+  .card .label {
+    font-size: 0.85rem;
+  }
+
+  .card .valore {
+    font-size: 1.6rem;
+  }
+
+  .dashboard h3 {
+    font-size: 1.15rem;
+  }
+
+  .movimento-form {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .movimento-form .row {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .movimento-form > input,
+  .movimento-form > select {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .movimento-form > button {
+    flex: none;
+    padding: 0.6rem 1.5rem;
+  }
+
+  .categoria-liste {
+    gap: 2rem;
+  }
+
+  .login-screen {
+    margin: 6rem auto;
+  }
+}
+
 .app-header {
   padding: 1rem;
   background: #16a34a;
