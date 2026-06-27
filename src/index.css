@@ -73,24 +73,24 @@ body {
   }
 
   .movimento-form {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    align-items: center;
   }
 
   .movimento-form .row {
-    flex: 1;
-    min-width: 220px;
+    display: contents;
   }
 
-  .movimento-form > input,
-  .movimento-form > select {
-    flex: 1;
-    min-width: 160px;
+  .movimento-form input,
+  .movimento-form select {
+    width: 100%;
   }
 
   .movimento-form > button {
-    flex: none;
+    grid-column: 1 / -1;
+    justify-self: start;
     padding: 0.6rem 1.5rem;
   }
 
