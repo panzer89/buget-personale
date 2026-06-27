@@ -1,10 +1,16 @@
 import { useState } from 'react'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence
+} from 'firebase/auth'
 import { auth } from './firebase'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [ricordami, setRicordami] = useState(true)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -13,6 +19,10 @@ function Login() {
     setError('')
     setLoading(true)
     try {
+      await setPersistence(
+        auth,
+        ricordami ? browserLocalPersistence : browserSessionPersistence
+      )
       await signInWithEmailAndPassword(auth, email, password)
     } catch {
       setError('Email o password non corretti.')
@@ -42,6 +52,14 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+        </label>
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={ricordami}
+            onChange={(e) => setRicordami(e.target.checked)}
+          />
+          Ricordami su questo dispositivo
         </label>
         {error && <p className="error">{error}</p>}
         <button type="submit" disabled={loading}>
