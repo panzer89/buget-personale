@@ -7,6 +7,7 @@ import Movimenti from './Movimenti.jsx'
 import Dashboard from './Dashboard.jsx'
 import SpeseProgrammate from './SpeseProgrammate.jsx'
 import ConfermaPopup from './ConfermaPopup.jsx'
+import Impostazioni from './Impostazioni.jsx'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -33,9 +34,18 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>Budget Personale</h1>
-        <button className="logout-btn" onClick={() => signOut(auth)}>
-          Esci
-        </button>
+        <div className="header-azioni">
+          <button
+            className={`settings-btn ${tab === 'impostazioni' ? 'active' : ''}`}
+            onClick={() => setTab('impostazioni')}
+            title="Impostazioni"
+          >
+            ⚙
+          </button>
+          <button className="logout-btn" onClick={() => signOut(auth)}>
+            Esci
+          </button>
+        </div>
       </header>
       <nav className="tabs">
         <button
@@ -68,6 +78,7 @@ function App() {
         {tab === 'movimenti' && <Movimenti />}
         {tab === 'programmate' && <SpeseProgrammate />}
         {tab === 'categorie' && <Categorie />}
+        {tab === 'impostazioni' && <Impostazioni />}
       </main>
       <ConfermaPopup />
     </div>

@@ -754,3 +754,65 @@ main {
   color: #999;
   margin-top: 0.8rem;
 }
+
+.header-azioni {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settings-btn {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.settings-btn.active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.impostazioni h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.impostazioni-azioni {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.danger-btn {
+  padding: 0.7rem;
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.danger-btn:hover {
+  background: #fee2e2;
+}
+
+.danger-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.impostazioni-messaggio {
+  margin-top: 1rem;
+  padding: 0.6rem;
+  background: #f0fdf4;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #166534;
+}
