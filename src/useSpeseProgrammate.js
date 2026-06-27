@@ -12,17 +12,22 @@ import {
 } from 'firebase/firestore'
 import { db } from './firebase'
 
+// Usa SEMPRE i componenti data locali (anno/mese/giorno), mai toISOString(),
+// che convertendo in UTC può far slittare il giorno in base al fuso orario.
+function toISO(dateObj) {
+  const y = dateObj.getFullYear()
+  const m = String(dateObj.getMonth() + 1).padStart(2, '0')
+  const d = String(dateObj.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 function oggiISO() {
-  return new Date().toISOString().slice(0, 10)
+  return toISO(new Date())
 }
 
 function parseISO(dataStr) {
   const [y, m, d] = dataStr.split('-').map(Number)
   return new Date(y, m - 1, d)
-}
-
-function toISO(dateObj) {
-  return dateObj.toISOString().slice(0, 10)
 }
 
 function addMesiClamped(dateObj, n) {
@@ -94,6 +99,12 @@ export function useSpeseProgrammate() {
     await updateDoc(doc(db, 'speseProgrammate', id), { stato })
   }
 
+  async function rimandaADomani(id) {
+    const domani = new Date()
+    domani.setDate(domani.getDate() + 1)
+    await updateDoc(doc(db, 'speseProgrammate', id), { promemoriaDa: toISO(domani) })
+  }
+
   async function rimuoviSpesaProgrammata(id) {
     await deleteDoc(doc(db, 'speseProgrammate', id))
   }
@@ -103,6 +114,7 @@ export function useSpeseProgrammate() {
     loading,
     aggiungiSpesaProgrammata,
     aggiornaStato,
+    rimandaADomani,
     rimuoviSpesaProgrammata
   }
 }

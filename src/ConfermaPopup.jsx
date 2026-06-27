@@ -4,17 +4,25 @@ import { useSpeseProgrammate } from './useSpeseProgrammate'
 import { useMovimenti } from './useMovimenti'
 
 function oggiISO() {
-  return new Date().toISOString().slice(0, 10)
+  const d = new Date()
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const giorno = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${giorno}`
 }
 
 function ConfermaPopup() {
   const { categorie } = useCategorie()
-  const { speseProgrammate, aggiornaStato } = useSpeseProgrammate()
+  const { speseProgrammate, aggiornaStato, rimandaADomani } = useSpeseProgrammate()
   const { aggiungiMovimento } = useMovimenti()
   const [indice, setIndice] = useState(0)
 
+  const oggi = oggiISO()
   const scadute = speseProgrammate.filter(
-    (s) => s.stato === 'in attesa' && s.data <= oggiISO()
+    (s) =>
+      s.stato === 'in attesa' &&
+      s.data <= oggi &&
+      (!s.promemoriaDa || s.promemoriaDa <= oggi)
   )
 
   useEffect(() => {
@@ -47,8 +55,8 @@ function ConfermaPopup() {
     await aggiornaStato(corrente.id, 'ignorata')
   }
 
-  function rimanda() {
-    setIndice((i) => (i + 1) % Math.max(scadute.length, 1))
+  async function rimandaDomani() {
+    await rimandaADomani(corrente.id)
   }
 
   return (
@@ -68,7 +76,7 @@ function ConfermaPopup() {
         </p>
         <div className="popup-azioni">
           <button className="popup-conferma" onClick={confermaPagata}>Sì, confermo</button>
-          <button className="popup-rimanda" onClick={rimanda}>Chiedimelo più tardi</button>
+          <button className="popup-rimanda" onClick={rimandaDomani}>Richiedimelo domani</button>
           <button className="popup-ignora" onClick={ignora}>Ignora</button>
         </div>
         {scadute.length > 1 && (
