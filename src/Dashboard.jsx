@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useCategorie } from './useCategorie'
 import { useMovimenti } from './useMovimenti'
+import { useImpostazioni } from './useImpostazioni'
 
 function meseCorrente() {
   return new Date().toISOString().slice(0, 7)
@@ -9,6 +10,7 @@ function meseCorrente() {
 function Dashboard() {
   const { categorie } = useCategorie()
   const { movimenti, loading } = useMovimenti()
+  const { margine, setMargine } = useImpostazioni()
   const [mese, setMese] = useState(meseCorrente())
 
   function nomeCategoria(id) {
@@ -29,6 +31,9 @@ function Dashboard() {
     .reduce((sum, m) => sum + m.importo, 0)
 
   const saldo = totaleEntrate - totaleSpese
+
+  const budgetDisponibile = totaleEntrate * (1 - margine / 100)
+  const puoiSpendere = budgetDisponibile - totaleSpese
 
   const speseCategoria = useMemo(() => {
     const map = {}
@@ -90,6 +95,30 @@ function Dashboard() {
           <span className="label">Saldo</span>
           <span className="valore">€{saldo.toFixed(2)}</span>
         </div>
+      </div>
+
+      <div className="analisi-box">
+        <div className="analisi-header">
+          <h3>Quanto puoi ancora spendere questo mese?</h3>
+          <label className="margine-input">
+            Margine di sicurezza
+            <input
+              type="number"
+              min="0"
+              max="100"
+              value={margine}
+              onChange={(e) => setMargine(e.target.value)}
+            />
+            %
+          </label>
+        </div>
+        <p className={`analisi-valore ${puoiSpendere >= 0 ? 'positivo' : 'negativo'}`}>
+          €{puoiSpendere.toFixed(2)}
+        </p>
+        <p className="hint">
+          Calcolato come entrate del mese meno il {margine}% da tenere da parte, meno le
+          spese già registrate questo mese.
+        </p>
       </div>
 
       <h3>Spese per categoria</h3>

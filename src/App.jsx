@@ -5,6 +5,8 @@ import Login from './Login.jsx'
 import Categorie from './Categorie.jsx'
 import Movimenti from './Movimenti.jsx'
 import Dashboard from './Dashboard.jsx'
+import SpeseProgrammate from './SpeseProgrammate.jsx'
+import ConfermaPopup from './ConfermaPopup.jsx'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -49,6 +51,12 @@ function App() {
           Movimenti
         </button>
         <button
+          className={tab === 'programmate' ? 'active' : ''}
+          onClick={() => setTab('programmate')}
+        >
+          Programmate
+        </button>
+        <button
           className={tab === 'categorie' ? 'active' : ''}
           onClick={() => setTab('categorie')}
         >
@@ -58,8 +66,10 @@ function App() {
       <main>
         {tab === 'dashboard' && <Dashboard />}
         {tab === 'movimenti' && <Movimenti />}
+        {tab === 'programmate' && <SpeseProgrammate />}
         {tab === 'categorie' && <Categorie />}
       </main>
+      <ConfermaPopup />
     </div>
   )
 }
